@@ -1,0 +1,54 @@
+.multi {
+    background:linear-gradient(45deg, #E6EE9C 30%, #FFE0B2 100%);
+    margin: 0 auto;
+    padding: 80px 85px;
+    display: flex;
+    flex-wrap:wrap;
+  }
+  
+  .card {
+    width: 30%;
+    height: 450px;
+    background: #ffffff 0% 0% no-repeat;
+    box-shadow: 0px 3px 10px #d8d8d8;
+    border-radius: 30px;
+    display: flex;
+    padding: 40px 20px;
+    margin: 10px;
+    box-sizing: border-box;
+    justify-content: center; 
+    align-items: center;
+  }
+  
+  .card span {
+    display: flex;
+    width: 200px;
+    height: 30px;
+    font: normal normal normal 20px/20px Microsoft JhengHei;
+    letter-spacing: 2px;
+    color:rgba(150,0,150,0.6);
+    align-items: center;
+    justify-content: center; 
+  }
+  
+  .card .number-title {
+    border: 1px solid green;
+    padding:10px 0;
+    text-align: center;
+    font: normal normal bold 50px/50px Microsoft JhengHei;
+    letter-spacing: 0px;
+    color:rgba(250,230,250,1);
+    background:rgba(50,50,50,1);
+    text-shadow: 4px 3px 0px rgba(100,100,100,1);
+  }
+  
+  .num-container {
+    width: 250px;
+    height: 350px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  

@@ -1,0 +1,143 @@
+/* 基本樣式 */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #f4f4f9, #dfe9f3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* To-Do List 主容器 */
+.todo-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 350px;
+    max-width: 90%;
+}
+
+/* 標題樣式 */
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* 輸入區域 */
+.input-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+#todo-input {
+    width: 80%;
+    padding: 8px;
+    margin-bottom: 10px; /* 與添加按鈕之間的間距 */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#add-button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap; /* 防止按鈕文字換行 */
+}
+
+#add-button:hover {
+    background-color: #45a049;
+}
+
+/* 任務列表樣式 */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px; /* 與輸入框/按鈕組之間的間距 */
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+li:hover {
+    background-color: #f1f1f1;
+    transform: translateY(-2px);
+}
+
+/* 任務文字樣式 */
+.task-text {
+    font-size: 14px;
+    color: #555;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.task-text.completed {
+    text-decoration: line-through;
+    color: grey;
+}
+
+button {
+    margin-left: 8px; /* 增加按鈕間距 */
+}
+
+button:first-of-type {
+    margin-left: 0; /* 第一個按鈕（完成按鈕）無需左側間距 */
+}
+
+/* 狀態切換按鈕 */
+.toggle-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 12px;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.toggle-button:hover {
+    opacity: 0.8;
+}
+
+.toggle-button.completed {
+    background-color: #28A745; /* 綠色 */
+}
+
+.toggle-button:not(.completed) {
+    background-color: #DC3545; /* 紅色 */
+}
+
+/* 刪除按鈕 */
+button.delete-button {
+    background-color: #DC3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 12px;
+    transition: background-color 0.2s ease;
+}
+
+button.delete-button:hover {
+    background-color: #BD2130;
+}
