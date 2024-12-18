@@ -17,13 +17,56 @@ document.addEventListener('DOMContentLoaded', () => {
             const li = document.createElement('li');
             li.innerHTML = `
                 <span class="task-text ${task.is_completed ? 'completed' : ''}">${task.description}</span>
+                <button class="edit-button" data-id="${task.id}">編輯</button>
                 <button class="delete-button" data-id="${task.id}">刪除</button>
                 <button class="toggle-button" data-id="${task.id}">${task.is_completed ? '未完成' : '完成'}</button>
             `;
             todoList.appendChild(li);
         });
 
-        // 添加刪除功能
+
+ // 綁定編輯功能
+ document.querySelectorAll('.edit-button').forEach(button => {
+    button.addEventListener('click', (event) => {
+        const taskId = event.target.getAttribute('data-id');
+        const taskItem = event.target.closest('li');
+        const taskText = taskItem.querySelector('.task-text').textContent;
+
+        editTask(taskId, taskText);
+    });
+});
+
+function editTask(taskId, currentText) {
+    // 顯示一個提示框讓使用者輸入新的內容
+    const newText = prompt('請輸入新的任務內容：', currentText);
+
+    if (newText !== null && newText.trim() !== '') {
+        // 發送 PUT 請求更新任務內容
+        fetch(`http://localhost:3000/api/tasks/${taskId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ description: newText })
+        })
+        .then(response => {
+            if (response.ok) {
+                loadTasks(); // 重新加載任務列表
+            } else {
+                console.error('更新任務失敗');
+                alert('更新任務失敗，請稍後再試');
+            }
+        })
+        .catch(error => {
+            console.error('更新任務時出錯:', error);
+            alert('更新任務時出錯，請稍後再試');
+        });
+    } else {
+        alert('任務內容不能為空');
+    }
+}
+
+
+
+// 添加刪除功能
 document.querySelectorAll('.delete-button').forEach(button => {
     button.addEventListener('click', async (event) => {
         const taskId = event.target.getAttribute('data-id');
@@ -110,61 +153,3 @@ document.querySelectorAll('.toggle-button').forEach(button => {
 
 
 
-
-/*/ 參考 DOM 元素
-const addButton = document.getElementById('add-button');
-const todoInput = document.getElementById('todo-input');
-const todoList = document.getElementById('todo-list');
-
-// 添加任務功能
-addButton.addEventListener('click', function() {
-    const taskText = todoInput.value.trim();
-    
-    if (taskText !== '') {
-        // 將任務發送到後端API
-
-        
-        // 創建新的列表項 
-        const li = document.createElement('li');
-        li.innerHTML = `
-            <span class="task-text">${taskText}</span>
-            <button class="delete-button">Delete</button>
-        `;
-
-        // 刪除按鈕功能
-        const deleteButton = li.querySelector('.delete-button');
-        deleteButton.addEventListener('click', function() {
-            todoList.removeChild(li);
-        });
-
-         // 完成任務功能
-        const taskTextSpan = li.querySelector('.task-text');
-        taskTextSpan.addEventListener('click', function () {
-            // 檢查當前任務是否已完成
-            const isCompleted = li.classList.contains('completed');
-            const confirmation = confirm(
-                isCompleted
-                    ? "此任務已完成，確定要標記為未完成嗎？"
-                    : "確定要標記此任務為完成嗎？"
-            );
-
-            // 根據用戶選擇，決定是否切換完成狀態
-            if (confirmation) {
-                li.classList.toggle('completed');
-            }
-        });
-
-        // 將新任務添加到列表中
-        todoList.appendChild(li);
-        
-        // 清空輸入框
-        todoInput.value = '';
-    }
-});
-
-// 如果按下回車鍵也能添加任務
-todoInput.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-        addButton.click();
-    }
-});*/

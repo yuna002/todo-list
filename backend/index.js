@@ -48,29 +48,57 @@ app.post('/api/tasks', async (req, res) => {
     }
 });
 
+
 // 更新任務狀態
 app.put('/api/tasks/:id', async (req, res) => {
     const { id } = req.params;
-    const { is_completed } = req.body;
+    const { description, is_completed } = req.body;
 
-    // 設定 `completed_at` 的值，如果任務完成則為當前時間，否則設為 NULL
-    const completedAt = is_completed ? new Date() : null;
+    if (description !== undefined && (!description || description.trim() === '')) {
+        return res.status(400).json({ error: '任務描述不能為空' });
+    }
 
     try {
-        const result = await pool.query(
-            'UPDATE tasks SET is_completed = $1, completed_at = $2 WHERE id = $3 RETURNING *',
-            [is_completed, completedAt, id]
-        );
-        if (result.rows.length === 0) {
-            res.status(404).send('Task not found');
-        } else {
-            res.json(result.rows[0]); // 返回更新後的任務
+        const completedAt = is_completed !== undefined ? (is_completed ? new Date() : null) : undefined;
+
+        // 更新的 SQL 動態構建
+        let query = 'UPDATE tasks SET ';
+        const updates = [];
+        const values = [];
+
+        if (description !== undefined) {
+            updates.push(`description = $${values.length + 1}`);
+            values.push(description);
         }
+
+        if (is_completed !== undefined) {
+            updates.push(`is_completed = $${values.length + 1}`);
+            values.push(is_completed);
+            updates.push(`completed_at = $${values.length + 1}`);
+            values.push(completedAt);
+        }
+
+        query += updates.join(', ');
+        query += ` WHERE id = $${values.length + 1} RETURNING *`;
+        values.push(id);
+
+        const result = await pool.query(query, values);
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: '未找到該任務' });
+        }
+        res.json(result.rows[0]);
     } catch (error) {
-        console.error('Error updating task:', error);
-        res.status(500).send('Error updating task');
+        console.error('更新任務時出錯:', error);
+        res.status(500).json({ error: '伺服器錯誤' });
     }
 });
+
+
+
+
+
+
 
 // 刪除任務
 app.delete('/api/tasks/:id', async (req, res) => {
